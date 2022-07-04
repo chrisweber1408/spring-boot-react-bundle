@@ -8,6 +8,8 @@ import RegisterPage from "./pages/register/RegisterPage";
 
 export default function App(){
 
+
+
     return(
         <BrowserRouter>
             <Routes>

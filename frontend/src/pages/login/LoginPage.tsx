@@ -1,5 +1,5 @@
 import {Button, TextField} from "@mui/material";
-import {FormEvent, useState} from "react";
+import {FormEvent, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {sendLogin} from "../../service/apiServices";
 import Header from "../../components/Header";
@@ -9,6 +9,7 @@ export default function RegisterPage(){
 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+
 
     const nav = useNavigate()
 
@@ -42,6 +43,7 @@ export default function RegisterPage(){
                         <Button onClick={()=>nav("/")} variant="contained">Back</Button>
                     </div>
                 </form>
+                <div className="g-signin2" data-onsuccess="onSignIn"></div>
             </div>
         </div>
     )
