@@ -21,7 +21,8 @@ public class TaskController {
     @PostMapping("/kanban")
     @ResponseStatus(HttpStatus.CREATED)
     public void postTask(@RequestBody Task task, Principal principal){
-        taskService.addOneTaskToDo(task, principal);
+        task.setUserId(principal.getName());
+        taskService.addOneTaskToDo(task);
     }
     @GetMapping("/kanban")
     public List<Task> getAllTasksById(Principal principal){

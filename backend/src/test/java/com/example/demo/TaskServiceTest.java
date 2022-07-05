@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.security.Principal;
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
@@ -17,16 +15,11 @@ public class TaskServiceTest {
     void shouldAddOneTask(){
         //given
         Task t1 = new Task("Aufräumen", "Zimmer aufräumen", "hans");
-        Principal p1 = new Principal() {
-            @Override
-            public String getName() {
-                return "hans";
-            }
-        };
+
         RepoDB taskRepo = mock(RepoDB.class);
         TaskService taskService = new TaskService(taskRepo);
         //when
-        taskService.addOneTaskToDo(t1, p1);
+        taskService.addOneTaskToDo(t1);
         //then
         Mockito.verify(taskRepo).save(t1);
     }
@@ -101,15 +94,10 @@ public class TaskServiceTest {
         //Given
         Task t1 = new Task("Aufräumen", "Zimmer aufräumen","hans");
         Task t2 = new Task("Aufräumen", "Zimmer aufräumen","hans");
-        Principal p1 = new Principal() {
-            @Override
-            public String getName() {
-                return null;
-            }
-        };
+
         RepoDB taskRepo = mock(RepoDB.class);
         TaskService taskService = new TaskService(taskRepo);
-        taskService.addOneTaskToDo(t1, p1);
+        taskService.addOneTaskToDo(t1);
         //when
         t1.setTask("Bier trinken");
         t1.setDescription("Mit den Jungs");

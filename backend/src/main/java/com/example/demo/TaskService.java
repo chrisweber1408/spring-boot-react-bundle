@@ -17,8 +17,7 @@ public class TaskService {
         this.taskRepo = taskRepo;
     }
 
-    public void addOneTaskToDo(Task taskToAdd, Principal principal){
-        taskToAdd.setUserId(principal.getName());
+    public void addOneTaskToDo(Task taskToAdd){
         taskRepo.save(taskToAdd);
     }
 
