@@ -1,7 +1,12 @@
 package com.example.demo;
 
+import com.example.demo.user.MyUser;
+import com.example.demo.user.MyUserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+
 
 import java.security.Principal;
 import java.util.List;
@@ -10,23 +15,24 @@ import java.util.Optional;
 @CrossOrigin
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class TaskController {
 
     private final TaskService taskService;
+    private final MyUserService myUserService;
 
-    public TaskController(TaskService taskService) {
-        this.taskService = taskService;
-    }
 
     @PostMapping("/kanban")
     @ResponseStatus(HttpStatus.CREATED)
     public void postTask(@RequestBody Task task, Principal principal){
-        task.setUserId(principal.getName());
+        MyUser user = myUserService.findByUsername(principal.getName()).orElseThrow();
+        task.setUserId(user.getId());
         taskService.addOneTaskToDo(task);
     }
     @GetMapping("/kanban")
     public List<Task> getAllTasksById(Principal principal){
-        return taskService.listAllTasksById(principal);
+        MyUser user = myUserService.findByUsername(principal.getName()).orElseThrow();
+        return taskService.listAllTasksById(user.getId());
     }
     @DeleteMapping("/kanban/{id}")
     public void deleteTask(@PathVariable String id){

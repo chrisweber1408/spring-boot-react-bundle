@@ -40,9 +40,9 @@ public class TaskControllerIT {
 
         //addTasks
         var token = loginResponseResponseEntity.getBody().getToken();
-        Task t1 = new Task("essen","viel", "Hans");
-        Task t2 = new Task("einkaufen","bisschen","Hans");
-        Task t3 = new Task("putzen","bad","Hans");
+        Task t1 = new Task("essen","viel");
+        Task t2 = new Task("einkaufen","bisschen");
+        Task t3 = new Task("putzen","bad");
         ResponseEntity<Void> postResponse1 = testRestTemplate.exchange("/api/kanban", HttpMethod.POST, new HttpEntity<>(t1, createHeader(token)), Void.class);
         ResponseEntity<Void> postResponse2 = testRestTemplate.exchange("/api/kanban", HttpMethod.POST, new HttpEntity<>(t2, createHeader(token)), Void.class);
         ResponseEntity<Void> postResponse3 = testRestTemplate.exchange("/api/kanban", HttpMethod.POST, new HttpEntity<>(t3, createHeader(token)), Void.class);
@@ -55,21 +55,26 @@ public class TaskControllerIT {
         Assertions.assertThat(getResponse.getBody()).hasSize(3);
 
         //getOneById
-        ResponseEntity<Task> getOneResponse = testRestTemplate.exchange("/api/kanban/" + t1.getId(), HttpMethod.GET, new HttpEntity<>(createHeader(token)), Task.class);
-        Assertions.assertThat(getOneResponse.getBody()).isEqualTo(t1);
+        Task oneTask = getResponse.getBody()[0];
+        ResponseEntity<Task> getOneResponse = testRestTemplate.exchange("/api/kanban/" + oneTask.getId(), HttpMethod.GET, new HttpEntity<>(createHeader(token)), Task.class);
+        Assertions.assertThat(getOneResponse.getBody()).isEqualTo(oneTask);
 
         //promoteTask
-        testRestTemplate.exchange("/api/kanban/next", HttpMethod.PUT, new HttpEntity<>(t1, createHeader(token)), Void.class);
-        ResponseEntity<Task> getNextResponse = testRestTemplate.exchange("/api/kanban/" + t1.getId(), HttpMethod.GET, new HttpEntity<>(createHeader(token)), Task.class);
+        testRestTemplate.exchange("/api/kanban/next", HttpMethod.PUT, new HttpEntity<>(oneTask, createHeader(token)), Void.class);
+        ResponseEntity<Task> getNextResponse = testRestTemplate.exchange("/api/kanban/" + oneTask.getId(), HttpMethod.GET, new HttpEntity<>(createHeader(token)), Task.class);
         Assertions.assertThat(getNextResponse.getBody().getStatus()).isEqualTo(IN_PROGRESS);
 
         //demoteTask
-        testRestTemplate.exchange("/api/kanban/prev", HttpMethod.PUT, new HttpEntity<>(t1, createHeader(token)), Void.class);
-        ResponseEntity<Task> getPrevResponse = testRestTemplate.exchange("/api/kanban/" + t1.getId(), HttpMethod.GET, new HttpEntity<>(createHeader(token)), Task.class);
+        testRestTemplate.exchange("/api/kanban/prev", HttpMethod.PUT, new HttpEntity<>(oneTask, createHeader(token)), Void.class);
+        ResponseEntity<Task> getPrevResponse = testRestTemplate.exchange("/api/kanban/" + oneTask.getId(), HttpMethod.GET, new HttpEntity<>(createHeader(token)), Task.class);
         Assertions.assertThat(getPrevResponse.getBody().getStatus()).isEqualTo(OPEN);
 
         //editTask
-        ResponseEntity<Void> editResponse = testRestTemplate.exchange("/api/kanban", HttpMethod.PUT, new HttpEntity<>(t1, createHeader(token)), Void.class);
+        oneTask.setTask("trinken");
+        oneTask.setDescription("auch viel");
+        testRestTemplate.exchange("/api/kanban", HttpMethod.PUT, new HttpEntity<>(oneTask, createHeader(token)), Void.class);
+        ResponseEntity<Task> getEditResponse = testRestTemplate.exchange("/api/kanban/" + oneTask.getId(), HttpMethod.GET, new HttpEntity<>(createHeader(token)), Task.class);
+        Assertions.assertThat(getEditResponse.getBody().getTask()).isEqualTo("trinken");
     }
 
     private HttpHeaders createHeader(String token){

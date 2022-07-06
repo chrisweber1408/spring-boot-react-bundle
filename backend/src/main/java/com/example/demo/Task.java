@@ -27,6 +27,10 @@ public class Task {
         id = UUID.randomUUID().toString();
     }
 
+    public Task(String task, String description) {
+        this.task = task;
+        this.description = description;
+    }
 }
 
 

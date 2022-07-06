@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
@@ -23,31 +26,25 @@ public class TaskServiceTest {
         //then
         Mockito.verify(taskRepo).save(t1);
     }
-/*
+
     @Test
-    void shouldListAllTasksFromHans(){
+    void shouldListAllTasksFromOneUser(){
         //given
         Task t1 = new Task("Aufräumen", "Zimmer aufräumen", "hans");
         Task t2 = new Task("Aufräumen", "Küche aufräumen", "hans");
         Task t3 = new Task("Abwaschen", "Dreckiges Geschirr abwaschen", "peter");
-        Principal p1 = new Principal() {
-            @Override
-            public String getName() {
-                return "hans";
-            }
-        };
+
         RepoDB taskRepo = mock(RepoDB.class);
-        when(taskRepo.findAllByUserId(p1.getName())).thenReturn(List.of(t1, t2));
+        when(taskRepo.findAllByUserId("hans")).thenReturn(List.of(t1,t2));
         TaskService taskService = new TaskService(taskRepo);
+
         //when
-        Collection<Task> actual = taskService.listAllTasksById(p1);
+        Collection<Task> actual = taskService.listAllTasksById("hans");
         //then
         Assertions.assertThat(actual)
                 .isEqualTo(List.of(t1, t2));
         Assertions.assertThat(actual).hasSize(2);
     }
-
- */
 
     @Test
     void shouldDeleteOneTask(){

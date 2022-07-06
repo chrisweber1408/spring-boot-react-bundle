@@ -3,9 +3,8 @@ package com.example.demo;
 
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
-import java.security.Principal;
-import java.util.ArrayList;
+
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,8 +20,8 @@ public class TaskService {
         taskRepo.save(taskToAdd);
     }
 
-    public ArrayList<Task> listAllTasksById(Principal principal){
-        return taskRepo.findAllByUserId(principal.getName());
+    public List<Task> listAllTasksById(String userId){
+        return taskRepo.findAllByUserId(userId);
     }
 
 
