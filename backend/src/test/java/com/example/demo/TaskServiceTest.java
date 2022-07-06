@@ -116,7 +116,7 @@ public class TaskServiceTest {
         taskService.nextStatusOfTask(t1);
         EnumStatus actual = t1.getStatus();
         //then
-        Assertions.assertThat(actual).toString().equals("DONE");
+        Assertions.assertThat(actual).isEqualTo(EnumStatus.DONE);
     }
     @Test
     void shouldGetPrevStatus(){
@@ -130,7 +130,7 @@ public class TaskServiceTest {
         taskService.prevStatusOfTask(t1);
         EnumStatus actual = t1.getStatus();
         //then
-        Assertions.assertThat(actual).toString().equals("IN_PROGRESS");
+        Assertions.assertThat(actual).isEqualTo(EnumStatus.IN_PROGRESS);
     }
 
 
