@@ -3,7 +3,6 @@ import {Task} from "../../service/model";
 import {useNavigate, useParams} from "react-router-dom";
 import {editTask, getTask} from "../../service/apiServices";
 import "./EditPage.css"
-import Header from "../../components/Header";
 import {Button, TextField} from "@mui/material";
 
 

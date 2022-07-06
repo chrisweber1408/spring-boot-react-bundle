@@ -1,10 +1,10 @@
 import {Task} from "../service/model";
-import {deleteTask, demoteTask, editTask, promoteTask} from "../service/apiServices";
+import {deleteTask, demoteTask, promoteTask} from "../service/apiServices";
 import {useNavigate} from "react-router-dom";
 import "./KanbanCard.css"
 import {useState} from "react";
 import "../pages/Error.css"
-import {Card, Paper} from "@mui/material";
+import {Paper} from "@mui/material";
 
 interface KanbanCardProps{
     task: Task;
